@@ -1,0 +1,211 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    x:Class="MovieInfo.WindowStyle"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:MovieInfo">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/MovieInfo;component/Resources/Light.xaml" />
+        <ResourceDictionary Source="/MovieInfo;component/Resources/Button.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="EditMovieLabel" TargetType="Label">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style x:Key="WindowTitle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        <Setter Property="Foreground" Value="{DynamicResource Accent}" />
+    </Style>
+    
+    <Style x:Key="MetroWindow" TargetType="{x:Type Window}">
+        <Setter Property="FontFamily" Value="{DynamicResource DefaultFontFamily}" />
+        <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}" />
+        <Setter Property="Foreground" Value="{DynamicResource WindowText}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource WindowBorder}" />
+        <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <!--<Setter Property="TextOptions.TextFormattingMode" Value="Display" />-->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:MainWindow">
+                    <Border x:Name="WindowBorder" BorderBrush="{DynamicResource Accent}" BorderThickness="2" CornerRadius="4" Margin="{Binding Source={x:Static SystemParameters.WindowNonClientFrameThickness}}">
+                        <Border.Background>
+                            <SolidColorBrush x:Name="WindowBorderBackground" Color="{DynamicResource WindowBackgroundColor}" />
+                        </Border.Background>
+                        
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                            <AdornerDecorator>
+                                <Grid x:Name="LayoutRoot">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <!-- window background content -->
+                                    <ContentControl Grid.RowSpan="5" Content="{DynamicResource WindowBackgroundContent}" />
+
+                                    <!-- title bar -->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Orientation="Horizontal" Grid.ColumnSpan="4">
+                                            <!-- title -->
+                                            <TextBlock Text="{TemplateBinding Title}" Margin="8,8,8,0" VerticalAlignment="Center" Style="{StaticResource WindowTitle}"/>
+
+                                            <!--Links-->
+                                            <Button ToolTip="Help" WindowChrome.IsHitTestVisibleInChrome="True" Width="15" Height="15" HorizontalAlignment="Left" Content="i" FontStyle="Italic" FontWeight="ExtraBold" Click="InfoButton_Click">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="{x:Type Button}">
+                                                        <Grid>
+                                                            <Ellipse Fill="{DynamicResource Accent}"/>
+                                                            <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Grid>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </StackPanel>
+
+                                        <!-- window system buttons-->
+                                        <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Top" WindowChrome.IsHitTestVisibleInChrome="True">
+                                            <Button Command="{Binding Source={x:Static SystemCommands.MinimizeWindowCommand}}" ToolTip="Minimize" Style="{StaticResource SystemButton}">
+                                                <Button.Content>
+                                                    <Grid Width="13" Height="12" RenderTransform="1,0,0,1,0,1">
+                                                        <Path Data="M0,6 L8,6 Z" Width="8" Height="7" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" StrokeThickness="2"  />
+                                                    </Grid>
+                                                </Button.Content>
+                                            </Button>
+                                            <Grid Margin="1,0,1,0">
+                                                <Button x:Name="Restore" Command="{Binding Source={x:Static SystemCommands.RestoreWindowCommand}}" ToolTip="Restore" Style="{StaticResource SystemButton}" Visibility="Collapsed" >
+                                                    <Button.Content>
+                                                        <Grid Width="13" Height="12" UseLayoutRounding="True" RenderTransform="1,0,0,1,.5,.5">
+                                                            <Path Data="M2,0 L8,0 L8,6 M0,3 L6,3 M0,2 L6,2 L6,8 L0,8 Z" Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" StrokeThickness="1"  />
+                                                        </Grid>
+                                                    </Button.Content>
+                                                </Button>
+                                                <Button x:Name="Maximize" Command="{Binding Source={x:Static SystemCommands.MaximizeWindowCommand}}" ToolTip="Maximize" Style="{StaticResource SystemButton}" >
+                                                    <Button.Content>
+                                                        <Grid Width="13" Height="12">
+                                                            <Path Data="M0,1 L9,1 L9,8 L0,8 Z" Width="9" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" StrokeThickness="2"  />
+                                                        </Grid>
+                                                    </Button.Content>
+                                                </Button>
+                                            </Grid>
+                                            <Button Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}" ToolTip="Close" Style="{StaticResource SystemCloseButton}" >
+                                                <Button.Content>
+                                                    <Grid Width="13" Height="12" RenderTransform="1,0,0,1,0,1">
+                                                        <Path Data="M0,0 L8,7 M8,0 L0,7 Z" Width="8" Height="7" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" StrokeThickness="1.5"  />
+                                                    </Grid>
+                                                </Button.Content>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <!-- Content Pane-->
+                                    <ContentPresenter Grid.Row="2"/>
+
+                                    <!-- resize grip -->
+                                    <Grid Grid.Row="3" x:Name="ResizeGrip" Background="Transparent" Visibility="Collapsed" HorizontalAlignment="Right" VerticalAlignment="Bottom" WindowChrome.ResizeGripDirection="BottomRight">
+                                        <Path Width="12" Height="12" Margin="1" 
+                                              Stroke="{DynamicResource WindowText}"
+                                              StrokeThickness="1"
+                                              Stretch="None"
+                                              Data="F1 M1,10 L3,10 M5,10 L7,10 M9,10 L11,10 M2,9 L2,11 M6,9 L6,11 M10,9 L10,11 M5,6 L7,6 M9,6 L11,6 M6,5 L6,7 M10,5 L10,7 M9,2 L11,2 M10,1 L10,3" />
+                                    </Grid>
+
+                                    <!--Footer -->
+                                    <Border Grid.Row="3" Grid.ColumnSpan="3" Background="{DynamicResource WindowFooterGradient}">
+                                        <StackPanel Margin="4" Orientation="Horizontal">
+                                            <TextBlock FontWeight="Bold" ToolTip="Email Me your suggestions or Feedback" Grid.Column="0" HorizontalAlignment="Left">Developed By : <Hyperlink NavigateUri="mailto:approach2vivek@gmail.com" RequestNavigate="Hyperlink_RequestNavigate">Vivek Dhiman</Hyperlink></TextBlock>
+                                              <Rectangle VerticalAlignment="Stretch" Width="2" Margin="4,2,4,1" Stroke="{DynamicResource Accent}" />
+                                            <TextBlock Margin="0,0,4,0" ToolTip="Support my work !!" FontWeight="Bold" HorizontalAlignment="Left"><Hyperlink NavigateUri="https://www.payumoney.com/paybypayumoney/#/185053" RequestNavigate="Hyperlink_RequestNavigate"><Run>Buy me a Beer</Run><Image Source="/MovieInfo;component/Resources/Images/beer.png" Width="14" Height="14"/></Hyperlink></TextBlock>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </AdornerDecorator>
+                        </Border>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsActive" Value="True">
+                            <Setter Property="BorderBrush" Value="{DynamicResource WindowBorderActive}" />
+                        </Trigger>
+                        <Trigger Property="WindowState" Value="Maximized">
+                            <Setter TargetName="Maximize" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="Restore" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="LayoutRoot" Property="Margin" Value="5" />
+                        </Trigger>
+                        <Trigger Property="WindowState" Value="Normal">
+                            <Setter TargetName="Maximize" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="Restore" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ResizeMode" Value="CanResizeWithGrip" />
+                                <Condition Property="WindowState" Value="Normal" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="ResizeGrip" Property="Visibility" Value="Visible" />
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="WindowChrome.WindowChrome">
+            <Setter.Value>
+                <WindowChrome CornerRadius="0" GlassFrameThickness="1" UseAeroCaptionButtons="False" NonClientFrameEdges="None" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="local:MainWindow" BasedOn="{StaticResource MetroWindow}"/>
+    <Style x:Key="UserControlStyle" TargetType="UserControl">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundColorBrush}" />
+        <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}"/>
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <!--<Setter Property="TextOptions.TextFormattingMode" Value="Display" />-->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="UserControl">
+                    <Border x:Name="WindowBorder" BorderBrush="{DynamicResource Accent}" BorderThickness="2" CornerRadius="4">
+                        <Border.Background>
+                            <SolidColorBrush x:Name="WindowBorderBackground" Color="{DynamicResource WindowBackgroundColor}" />
+                        </Border.Background>
+                        <Grid>
+                            <Border BorderThickness="1">
+                                <AdornerDecorator>
+                                    <Grid x:Name="LayoutRoot">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="15" />
+                                        </Grid.RowDefinitions>
+                                        <!-- window background content -->
+                                        <ContentControl Grid.RowSpan="5" Content="{DynamicResource WindowBackgroundContent}" />
+                                        <ContentPresenter Grid.Row="1" Grid.RowSpan="2" Margin="7"/>
+                                        <Rectangle x:Name="HeaderBackground" Height="25" Fill="{DynamicResource WindowBackgroundColorBrush}" VerticalAlignment="Top" Grid.Row="0"/>
+                                    </Grid>
+                                </AdornerDecorator>
+                            </Border>
+                            <Border BorderBrush="{StaticResource Accent}" BorderThickness="1" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

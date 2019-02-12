@@ -1,0 +1,24 @@
+﻿<Page x:Class="MovieInfo.Source.UI.Help"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      KeepAlive="True"
+      d:DesignHeight="300" d:DesignWidth="300"
+      Background="{DynamicResource WindowFooterGradient}"
+	  Title="Help">
+    
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="26"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Button Content="Go Back" Style="{DynamicResource BrowseBack}"/>
+
+        <Border Margin="10,20,10,10" Grid.Row="1" BorderThickness="2" BorderBrush="{DynamicResource Accent}" CornerRadius="4" Visibility="Visible">
+            <WebBrowser x:Name="HelpBrowser" Grid.Row="1" />
+        </Border>
+    </Grid>
+</Page>

@@ -1,0 +1,65 @@
+﻿<Page x:Class="MovieInfo.Source.UI.Settings"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      KeepAlive="True"
+      d:DesignHeight="300" d:DesignWidth="300"
+	 Title="Settings">
+
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="26"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Button Content="Go Back" Style="{DynamicResource BrowseBack}"/>
+        <Grid Margin="20" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <ListBox Grid.Column="0">
+                <ListBoxItem Content="Apperance" Background="{DynamicResource ToolBarBackground}"/>
+            </ListBox>
+            
+            <ScrollViewer Grid.Column="2">
+                <Border Name="mStartBtnPanel" BorderThickness="2" BorderBrush="{DynamicResource Accent}" CornerRadius="4" Visibility="Visible" Margin="5">
+                    <StackPanel MinWidth="150" x:Name="Panel">
+                        <ListBox ItemsSource="{Binding AccentColors}"
+                                 SelectedItem="{Binding SelectedAccentColor, Mode=TwoWay}"
+                                 HorizontalContentAlignment="Stretch">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel MaxWidth="{Binding ActualWidth, ElementName=Panel}" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                                        <Rectangle Width="30" Height="30" Margin="2" >
+                                            <Rectangle.Fill>
+                                                <SolidColorBrush x:Name="Brush" Color="{Binding}" />
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Margin="5">
+                                <TextBlock>Color <Run FontSize="10">(#AARRGGBB)</Run></TextBlock>
+                            </Label>
+                            <TextBox Margin="5" x:Name="CustomValue" Width="80" Height="25">#AARRGGBB</TextBox>
+                            <Button Margin="5" Click="ApplyBtn_Click">Apply</Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </ScrollViewer>
+        </Grid>
+        
+    </Grid>
+</Page>

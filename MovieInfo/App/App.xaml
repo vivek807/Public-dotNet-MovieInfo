@@ -1,0 +1,13 @@
+﻿<Application x:Class="MovieInfo.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="../Source/UI/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!--The theme must be specified here to ensure all visual elements display in the designer-->
+                <ResourceDictionary Source="/MovieInfo;component/Resources/Theme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,570 @@
+﻿<Page x:Class="MovieInfo.MainPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        Name="mMainWindow"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:MovieInfo"
+        KeepAlive="True"
+        Title="Movie Information v3.0.1">
+    <Page.Resources>
+        <ContextMenu x:Key="cm">
+            <MenuItem Header="Play" Click="Play_Click">
+                <MenuItem.Icon>
+                    <Image Source="/MovieInfo;component/Resources/Images/play.png" Width="20" Height="20" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Open File Location" Click="OpenFileLocation_Click">
+                <MenuItem.Icon>
+                    <Image Source="/MovieInfo;component/Resources/Images/FolderOpen.ico" Width="18" Height="18"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Update Info" Click="UpdateInfo_Click">
+                <MenuItem.Icon>
+                    <Image Source="/MovieInfo;component/Resources/Images/Edit.ico" Width="18" Height="18"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Delete Movie from Disk" Click="DeleteMovie_Click">
+                <MenuItem.Icon>
+                    <Image Source="/MovieInfo;component/Resources/Images/deleteIcon.png" Width="18" Height="18"/>
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+    </Page.Resources>
+
+    <DockPanel>
+        <DockPanel HorizontalAlignment="Right" DockPanel.Dock="Top">
+            <Border BorderThickness="1"  Margin="4,0,0,0" BorderBrush="{DynamicResource Accent}" CornerRadius="4" Visibility="Visible">
+                <TextBlock Margin="4,0,0,0" ToolTip="Support my work !!" FontWeight="Bold" HorizontalAlignment="Left"><Hyperlink NavigateUri="https://www.payumoney.com/paybypayumoney/#/185053" RequestNavigate="Hyperlink_RequestNavigate"><Run>Buy me a Beer</Run><Image Source="/MovieInfo;component/Resources/Images/beer.png" Width="14" Height="14"/></Hyperlink></TextBlock>
+            </Border>
+            <Rectangle VerticalAlignment="Stretch" Width="1" Margin="4,4,0,4" Stroke="Black" />
+            <TextBlock Margin="4,0,4,4">
+                <Hyperlink NavigateUri="/Source/UI/Help.xaml">Help</Hyperlink>
+            </TextBlock>
+            <Rectangle VerticalAlignment="Stretch" Width="1" Margin="0,4,0,4" Stroke="Black" />
+            <TextBlock Margin="4,0,4,4">
+                <Hyperlink NavigateUri="/Source/UI/Credits.xaml">Credits</Hyperlink>
+            </TextBlock>
+            <Rectangle VerticalAlignment="Stretch" Width="1" Margin="0,4,0,4" Stroke="Black" />
+            <TextBlock Margin="4,0,12,4">
+                <Hyperlink NavigateUri="/Source/UI/Settings.xaml">Setting</Hyperlink>
+            </TextBlock>
+        </DockPanel>
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Expander Style="{StaticResource CustomExpander}" Name="SelectionPanel" Header="Selection Panel" IsExpanded="True" Grid.Row="0" Grid.ColumnSpan="3"  Margin="4,4,4,0">
+                <StackPanel Orientation="Vertical">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <GroupBox Header="Selection Type" FontWeight="Bold" Margin="5">
+                            <StackPanel Margin="10">
+                                <RadioButton GroupName="mySelection" FontWeight="Normal" Name="myPC" Click="myPC_Click">My PC</RadioButton>
+                                <RadioButton GroupName="mySelection" FontWeight="Normal" Name="customeFolder" Click="customeFolder_Click">My Custom Folders</RadioButton>
+                                <RadioButton GroupName="mySelection" FontWeight="Normal" Name="fromTextFile" Click="fromTextFile_Click">From Text File (containing file Names or Paths)</RadioButton>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Import data"  FontWeight="Bold" Grid.Column="2" Margin="5">
+                            <StackPanel Margin="10">
+                                <RadioButton GroupName="mySelection" FontWeight="Normal" Name="importXML" Click="importXML_Click">From XML (Fast)</RadioButton>
+                                <RadioButton GroupName="mySelection" FontWeight="Normal" Name="importExcel" Click="importExcel_Click">From Excel (Slow)</RadioButton>
+                                <RadioButton GroupName="mySelection" FontWeight="Normal" Name="reloadLastSession" Click="reloadLastSession_Click">Reload Last Session</RadioButton>
+                            </StackPanel>
+                        </GroupBox>
+                    </Grid>
+                </StackPanel>
+            </Expander>
+
+            <Expander Style="{StaticResource CustomExpander}" Name="StartPanel" Header="Start Panel" Grid.Row="2" Grid.ColumnSpan="3" Margin="4,0,4,0" IsExpanded="True">
+                <Grid>
+                    <Slider  Name="_zoom" Value="1" Minimum="0.1" Maximum="4" Visibility="Hidden" Height="8"/>
+
+                    <Border Name="mStartBtnPanel" BorderThickness="2" BorderBrush="{DynamicResource Accent}" CornerRadius="4" Visibility="Visible" Margin="5">
+                        <Grid Margin="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Height="23" Grid.ColumnSpan="3" Name="mSourceEdit" Text="" IsEnabled="False"/>
+                            <Button Grid.Row="1" Grid.Column="0" Width="125" IsDefault="True" Name="mStartBtn" Click="mStartBtn_Click" Margin="0,10,0,0" Content="Start" HorizontalAlignment="Right" IsEnabled="False"/>
+                            <Button Grid.Row="1" Grid.Column="2" Width="125" Name="mAppendBtn" Click="AppendBtn_Click" Margin="0,10,0,0" Content="Merge Result" HorizontalAlignment="Left" IsEnabled="False"/>
+                        </Grid>
+                    </Border>
+
+                    <Border Name="mProgressBarGrid" BorderThickness="2" BorderBrush="{DynamicResource Accent}" CornerRadius="4" Visibility="Collapsed" Margin="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ProgressBar Margin="5,0,0,0" Name="mProgressBar" Height="15"/>
+                            <TextBlock FontStyle="Italic" FontSize="12" FontWeight="Bold" Text="{Binding ProgressBarText, RelativeSource={RelativeSource FindAncestor, AncestorType=Page}}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Button Style="{StaticResource StopButton}" Margin="5,0,5,0" VerticalAlignment="Center" Click="StopBtn_Click" Grid.Column="1"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Expander>
+
+            <!-- Grid ToolBar-->
+            <Border Margin="10,5,10,0" BorderThickness="2" BorderBrush="{DynamicResource Accent}" Grid.Row="3" Grid.ColumnSpan="3" CornerRadius="4,4,0,0">
+                <DockPanel Name="mToolbar">
+                    <ToolBarTray>
+                        <ToolBar DockPanel.Dock="Top">
+                            <Button ToolBar.OverflowMode="AsNeeded" Click="SwitchPane_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/MovieInfo;component/Resources/Images/View.png" Width="18" Height="18"/>
+                                    <TextBlock Margin="3,0,0,0">View</TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <Button ToolBar.OverflowMode="AsNeeded" Click="DuplicateFind_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/MovieInfo;component/Resources/Images/duplicate.jpg" Width="18" Height="18"/>
+                                    <TextBlock Margin="3,0,0,0">Find Duplicate</TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <Separator Margin="3"/>
+                            <Button ToolBar.OverflowMode="AsNeeded" Click="subtitle_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/MovieInfo;component/Resources/Images/cc.png" Width="18" Height="18"/>
+                                    <TextBlock Margin="3,0,0,0">Add subtitle (en)</TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <Separator Margin="3"/>
+                            <Button ToolBar.OverflowMode="AsNeeded" Click="XML_ExportClick">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/MovieInfo;component/Resources/Images/exportXML.png" Width="18" Height="18"/>
+                                    <TextBlock Margin="3,0,0,0">Export as XML <Run FontSize="8">(Recommended)</Run></TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <Separator Margin="3"/>
+                            <Button ToolBar.OverflowMode="AsNeeded" Click="Excel_ExportClick">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/MovieInfo;component/Resources/Images/exportExcel.ico" Width="18" Height="18"/>
+                                    <TextBlock Margin="3,0,0,0">Export as Excel</TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <Separator Margin="3"/>
+                            <ToggleButton ToolBar.OverflowMode="AsNeeded" Name="GroupByScanDate" Checked="GroupByScanDate_Checked" Unchecked="GroupByScanDate_Unchecked">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/MovieInfo;component/Resources/Images/Group.png" Width="18" Height="18"/>
+                                    <TextBlock Margin="3,0,0,0">Group by new additions</TextBlock>
+                                </StackPanel>
+                            </ToggleButton>
+                            <Separator Margin="3"/>
+                            <ToggleButton ToolBar.OverflowMode="AsNeeded" IsChecked="False" Name="mPlayOnDoubleClick">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/MovieInfo;component/Resources/Images/Play.png" Width="18" Height="18"/>
+                                    <TextBlock Margin="3,0,0,0">Play on Double Click</TextBlock>
+                                </StackPanel>
+                            </ToggleButton>
+                            <Separator Margin="3"/>
+                            <ToggleButton ToolBar.OverflowMode="AsNeeded" IsChecked="True" Name="mDownloadNewPoster">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/MovieInfo;component/Resources/Images/download.png" Width="18" Height="18"/>
+                                    <TextBlock Margin="3,0,0,0">Download Movie Posters</TextBlock>
+                                </StackPanel>
+                            </ToggleButton>
+                            <Separator Margin="3"/>
+                            <Button ToolBar.OverflowMode="AsNeeded" Click="DeleteWatchedMovie_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/MovieInfo;component/Resources/Images/deleteIcon.png" Width="18" Height="18"/>
+                                    <TextBlock Margin="3,0,0,0">Delete all watched movies</TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <Separator Margin="3"/>
+                            <Button ToolBar.OverflowMode="AsNeeded" Click="AddNewMovie_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/MovieInfo;component/Resources/Images/Add.jpg" Width="18" Height="18"/>
+                                    <TextBlock Margin="3,0,0,0">Add Movie</TextBlock>
+                                </StackPanel>
+                            </Button>
+                        </ToolBar>
+                    </ToolBarTray>
+                </DockPanel>
+            </Border>
+
+            <!--Data Grid-->
+            <Border Margin="10,5,10,0" x:Name="mMovieGrid" BorderThickness="1" BorderBrush="{DynamicResource Accent}" Grid.Row="4" Grid.ColumnSpan="3" CornerRadius="3" Visibility="Visible">
+                <Border.LayoutTransform>
+                    <ScaleTransform ScaleX="{Binding Path=Value, ElementName=_zoom}" ScaleY="{Binding Path=Value, ElementName=_zoom}" />
+                </Border.LayoutTransform>
+                <DataGrid MouseRightButtonUp="mGrid_MouseRightButtonUp" AutoGeneratedColumns="mGrid_AutoGeneratedColumns"
+          AlternationCount="2" CanUserDeleteRows="false" CanUserResizeRows="True" IsReadOnly="True"
+          AutoGeneratingColumn="mGrid_AutoGeneratingColumn" AutoGenerateColumns="True" AlternatingRowBackground="{DynamicResource TableAlternativeRow}"  
+          x:Name="mGridUI"  MouseDoubleClick="mGrid_MouseDoubleClick" RowDetailsVisibilityMode="Collapsed"
+          LoadingRowDetails="mGrid_LoadingRowDetails" GridLinesVisibility="Horizontal" 
+		  PreviewMouseWheel="mGrid_PreviewMouseWheel" PreviewMouseDown="mGrid_PreviewMouseDown"
+          SelectionMode="Single" PreviewKeyDown="mGrid_KeyDown"
+          ScrollViewer.VerticalScrollBarVisibility="Auto" EnableRowVirtualization="True"
+          VirtualizingPanel.IsVirtualizingWhenGrouping="True" LoadingRow="mGrid_LoadingRow">
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="Padding" Value="5"/>
+                            <Setter Property="Background" Value="{DynamicResource WindowFooterGradient}" />
+                            <Setter Property="BorderBrush" Value="Black"/>
+                            <Setter Property="BorderThickness" Value="0,1,0,1"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.RowHeaderStyle>
+                        <Style TargetType="{x:Type DataGridRowHeader}">
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="Padding" Value="5"/>
+                            <Setter Property="BorderThickness" Value="1,0,1,1"/>
+                            <Setter Property="Background" Value="{DynamicResource WindowFooterGradient}" />
+                            <Setter Property="BorderBrush" Value="Black"/>
+                        </Style>
+                    </DataGrid.RowHeaderStyle>
+                    <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Padding" Value="5"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                        <Border Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                            <ContentPresenter VerticalAlignment="Center" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGrid.CellStyle>
+                    <DataGrid.RowDetailsTemplate>
+                        <DataTemplate>
+                            <DockPanel>
+                                <Image DockPanel.Dock="Left" Name="mPoster" VerticalAlignment="Top" Height="80" Margin="10" />
+                                <Grid Margin="0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="5"/>
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Text="Name: " FontWeight="Bold" />
+                                    <TextBlock Name="mRowDetailsName" Grid.Column="2" />
+                                    <TextBlock Text="Ranking: " FontWeight="Bold" Grid.Row="1" />
+                                    <TextBlock Name="mRowDetailsRanking" Grid.Column="2" Grid.Row="1" />
+                                    <TextBlock Text="Genre: " FontWeight="Bold" Grid.Row="2" />
+                                    <TextBlock Name="mRowDetailsGenre" Grid.Column="2" Grid.Row="2" />
+                                    <TextBlock Text="Plot: " FontWeight="Bold" Grid.Row="3" />
+                                    <TextBlock TextWrapping="Wrap" MaxWidth="{Binding ElementName=mMainWindow, Path=PlotWidth, Mode=OneWay}" HorizontalAlignment="Left" Name="mRowDetailsPlot" Grid.Column="2" Grid.Row="3" />
+                                </Grid>
+                            </DockPanel>
+                        </DataTemplate>
+                    </DataGrid.RowDetailsTemplate>
+                    <DataGrid.Resources>
+                        <Style x:Key="wordWrapStyle" TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                            <Setter Property="MaxWidth" Value="500" />
+                        </Style>
+                        <DataGridTemplateColumn x:Key="AlreadyWatchedHeader" SortMemberPath="AlreadyWatched" CanUserSort="True">
+                            <DataGridTemplateColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <Image ToolTip="Already Watched" Width="25" Height="25" Source="/MovieInfo;component/Resources/Images/eye.png" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox x:Name="mCheckBoxCell" IsChecked="{Binding AlreadyWatched}" HorizontalAlignment="Center" Click="UpdateSourceData"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Resources>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="{x:Type DataGridRow}">
+                            <EventSetter Event="MouseLeftButtonUp" Handler="MouseLeftButtonUp_Event"/>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.Style>
+                        <Style TargetType="DataGrid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedItems.IsEmpty, RelativeSource={RelativeSource Self}}" Value="false">
+                                    <Setter Property="ContextMenu" Value="{StaticResource cm}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Style>
+                    <DataGrid.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Path=Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                            <GroupStyle.ContainerStyle>
+                                <Style TargetType="{x:Type GroupItem}">
+                                    <Setter Property="Margin" Value="0,0,0,5"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                <Expander IsExpanded="False" Background="LightBlue" BorderBrush="Black" Foreground="Black" BorderThickness="1,1,1,5">
+                                                    <Expander.Header>
+                                                        <DockPanel>
+                                                            <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" Margin="5,0,0,0" Width="100"/>
+                                                            <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}"/>
+                                                        </DockPanel>
+                                                    </Expander.Header>
+                                                    <Expander.Content>
+                                                        <ItemsPresenter />
+                                                    </Expander.Content>
+                                                </Expander>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </GroupStyle.ContainerStyle>
+                        </GroupStyle>
+                    </DataGrid.GroupStyle>
+                </DataGrid>
+            </Border>
+            <Border Margin="10,5,10,0" x:Name="mMoviePane" BorderThickness="1" BorderBrush="{DynamicResource Accent}" Grid.Row="4" Grid.ColumnSpan="3" CornerRadius="3" Visibility="Collapsed">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition MinWidth="200" Width="*"/>
+                        <ColumnDefinition Width="5" MinWidth="2"/>
+                        <ColumnDefinition MinWidth="400" Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <DataGrid AutoGenerateColumns="False"
+                      CanUserDeleteRows="false" CanUserResizeRows="True" IsReadOnly="True"
+                      x:Name="mPaneUI"  MouseDoubleClick="mGrid_MouseDoubleClick" GridLinesVisibility="None"
+		              PreviewMouseWheel="mGrid_PreviewMouseWheel" PreviewMouseDown="mGrid_PreviewMouseDown"
+                      SelectionMode="Single" PreviewKeyDown="mGrid_KeyDown"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto" EnableRowVirtualization="True"
+                      VirtualizingPanel.IsVirtualizingWhenGrouping="True" LoadingRow="mGrid_LoadingRow">
+                        <DataGrid.RowHeaderStyle>
+                            <Style TargetType="{x:Type DataGridRowHeader}">
+                                <Setter Property="FontWeight" Value="Bold" />
+                                <Setter Property="Padding" Value="5"/>
+                                <Setter Property="BorderThickness" Value="1,0,1,1"/>
+                                <Setter Property="Background" Value="{DynamicResource ToolBarBackground}" />
+                                <Setter Property="BorderBrush" Value="Black"/>
+                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            </Style>
+                        </DataGrid.RowHeaderStyle>
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="ContextMenu" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Page}}, Path=SortContextMenu}" />
+                                <Setter Property="Background" Value="{DynamicResource WindowFooterGradient}" />
+                                <Setter Property="BorderBrush" Value="Black"/>
+                                <Setter Property="BorderThickness" Value="0,1,1,1"/>
+                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+                                <EventSetter Event="MouseLeftButtonUp" Handler="ShowDetails_Click"/>
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.Style>
+                            <Style TargetType="DataGrid">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedItems.IsEmpty, RelativeSource={RelativeSource Self}}" Value="false">
+                                        <Setter Property="ContextMenu" Value="{StaticResource cm}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Style>
+                        <DataGrid.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Path=Name}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="{x:Type GroupItem}">
+                                        <Setter Property="Margin" Value="0,0,0,5"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                    <Expander IsExpanded="False" Background="LightBlue" BorderBrush="Black" Foreground="Black" BorderThickness="1,1,1,5">
+                                                        <Expander.Header>
+                                                            <DockPanel>
+                                                                <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" Margin="5,0,0,0" Width="100"/>
+                                                                <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}"/>
+                                                            </DockPanel>
+                                                        </Expander.Header>
+                                                        <Expander.Content>
+                                                            <ItemsPresenter />
+                                                        </Expander.Content>
+                                                    </Expander>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
+                        </DataGrid.GroupStyle>
+
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <!--<Border BorderThickness="2" Background="Transparent" BorderBrush="{DynamicResource Accent}" CornerRadius="4" Visibility="Visible" Margin="5">-->
+                                            <StackPanel Margin="10,4,4,4">
+                                                <TextBlock FontSize="16" FontWeight="Bold" Text="Movie Name"/>
+                                                <TextBlock FontSize="10" FontWeight="Bold" Text="Movie Genre"/>
+                                            </StackPanel>
+                                        <!--</Border>-->
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border BorderThickness="2" Background="{DynamicResource TableAlternativeRow}" BorderBrush="{DynamicResource Accent}" CornerRadius="4" Visibility="Visible" Margin="5">
+                                            <StackPanel Margin="2">
+                                                <TextBlock FontSize="16" Text="{Binding FileName}"/>
+                                                <TextBlock FontSize="10" Text="{Binding Genre}"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <GridSplitter ResizeDirection="Columns" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="2" Panel.ZIndex="1"/>
+                    
+                    <Border Grid.Column="2" BorderThickness="2" Background="{DynamicResource TableAlternativeRow}" BorderBrush="{DynamicResource Accent}" CornerRadius="4" Visibility="Visible" Margin="5">
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+                            <Grid>
+                                <DockPanel x:Name="mDetailPaneAlternate" Margin="20,20,0,0" Visibility="Collapsed" LastChildFill="True" VerticalAlignment="Top">
+                                    <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" FontWeight="Bold" FontSize="24" Text="Sorry!! No information available "/>
+                                    <TextBlock DockPanel.Dock="Bottom" TextWrapping="Wrap" Text="Try to resolve the title manually using context menu"/>
+                                </DockPanel>
+                                <DockPanel Margin="10" x:Name="mDetailPane" MouseLeftButtonUp="ScrollToView_Click" Visibility="Collapsed" SizeChanged="mDetailPane_SizeChanged"  ContextMenu="{StaticResource cm}" Background="Transparent"
+                                       DataContext="{Binding ElementName=mMainWindow, Path=PaneSelectedItem, Mode=TwoWay}">
+                                    <StackPanel DockPanel.Dock="Top" Margin="5,5,5,20" VerticalAlignment="Top" Orientation="Horizontal">
+                                        <CheckBox VerticalAlignment="Center" Style="{DynamicResource PaneCheckBox}" IsChecked="{Binding AlreadyWatched}" Click="UpdateSourceData"/>
+                                        <TextBlock Style="{DynamicResource PaneTextBox}" Text="Mark as Watched" FontWeight="Bold" Margin="4,0,0,0"/>
+
+                                        <Rectangle VerticalAlignment="Stretch" Width="2" Margin="8,2,8,1" Stroke="{DynamicResource Accent}" />
+                                        <TextBlock Style="{DynamicResource PaneTextBox}" FontWeight="Bold" Text="{Binding Title}"/>
+
+                                        <Rectangle VerticalAlignment="Stretch" Width="2" Margin="8,2,8,1" Stroke="{DynamicResource Accent}" />
+                                        <TextBlock Style="{DynamicResource PaneTextBox}" FontWeight="Bold" Text="{Binding Year}"/>
+
+                                        <Rectangle VerticalAlignment="Stretch" Width="2" Margin="8,2,8,1" Stroke="{DynamicResource Accent}" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <local:RatingControl Height="Auto" Width="120" VerticalAlignment="Center" x:Name="mDetailPaneRanking_Top"/>
+                                            <TextBlock Name="mDetailPaneRankingTxt_Top" Margin="4,2,0,0"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <DockPanel VerticalAlignment="Top" Margin="5,0,0,0">
+                                    <Image Name="mDetailPanePoster" VerticalAlignment="Top" Margin="0,0,10,0" Height="{Binding ElementName=mMainWindow, Path=PosterWidth, Mode=OneWay}"/>
+
+                                        <Grid Margin="8,-8,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="2"/>
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Style="{DynamicResource PaneTextBox}" HorizontalAlignment="Left" Grid.ColumnSpan="3" Grid.Row="0">
+                                            <Run FontWeight="Bold">Summary :&#x09;</Run> <Run Text="{Binding Plot}"/>
+                                        </TextBlock>
+                                        
+                                        <TextBlock Grid.Row="1"/>
+                                        
+                                        <TextBlock Style="{DynamicResource PaneTextBox}" Text="Title: " FontWeight="Bold" Grid.Row="2" />
+                                        <TextBlock Style="{DynamicResource PaneTextBox}" Text="{Binding Title}" Grid.Column="2" Grid.Row="2" />
+
+                                        <TextBlock Style="{DynamicResource PaneTextBox}" Text="Genre: " FontWeight="Bold" Grid.Row="3" />
+                                        <TextBlock Style="{DynamicResource PaneTextBox}" Text="{Binding Genre}" Grid.Column="2" Grid.Row="3" />
+                                            
+                                        <TextBlock Style="{DynamicResource PaneTextBox}" Text="Directors: " FontWeight="Bold" Grid.Row="4" />
+                                        <TextBlock Style="{DynamicResource PaneTextBox}" Text="{Binding Director}" Grid.Column="2" Grid.Row="4" />
+
+                                        <TextBlock Style="{DynamicResource PaneTextBox}" Text="Actors: " FontWeight="Bold" Grid.Row="5" />
+                                        <TextBlock Style="{DynamicResource PaneTextBox}" Text="{Binding Actors}" Grid.Column="2" Grid.Row="5" />
+
+                                        <TextBlock Style="{DynamicResource PaneTextBox}" Text="Awards: " FontWeight="Bold" Grid.Row="6" />
+                                        <TextBlock Style="{DynamicResource PaneTextBox}" Text="{Binding Awards}" Grid.Column="2" Grid.Row="6" />
+
+                                        <TextBlock Style="{DynamicResource PaneTextBox}" Text="Country: " FontWeight="Bold" Grid.Row="7" />
+                                        <TextBlock Style="{DynamicResource PaneTextBox}" Text="{Binding Country}" Grid.Column="2" Grid.Row="7" />
+
+                                        <TextBlock Style="{DynamicResource PaneTextBox}" Text="Language: " FontWeight="Bold" Grid.Row="8" />
+                                        <TextBlock Style="{DynamicResource PaneTextBox}" Text="{Binding Language}" Grid.Column="2" Grid.Row="8" />
+                                    </Grid>
+                                </DockPanel>
+                            </DockPanel>
+                            </Grid>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!--Filters-->
+            <Border Margin="10,5,10,5" BorderThickness="2" BorderBrush="{DynamicResource Accent}" Grid.Row="5" Grid.ColumnSpan="3" CornerRadius="0,0,4,4">
+                <DockPanel  Name="mFilterBar">
+                    <ToolBarTray>
+                        <ToolBar DockPanel.Dock="Top">
+                            <Button Click="ClearFilter_Click">Clear Filter</Button>
+                            <Separator Margin="3"/>
+                            <Label Content="Search:"/>
+                            <TextBox Name="mFilterText" BorderBrush="Black" TextChanged="FilterText_TextChanged" Width="80"/>
+                            <Separator Margin="3"/>
+                            <Border BorderBrush="Black" BorderThickness="1" Margin="2">
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton Click="FilterRadioClicked" Name="mAll" Margin="10,1,0,0" GroupName="filters">All</RadioButton>
+                                    <RadioButton Click="FilterRadioClicked" Name="mFileNameRadio" Margin="10,1,0,0" GroupName="filters">File Name</RadioButton>
+                                    <RadioButton Click="FilterRadioClicked" IsChecked="True" Name="mTitleRadio" Margin="10,1,0,0" GroupName="filters">Title</RadioButton>
+                                    <RadioButton Click="FilterRadioClicked" Name="mGenreRadio" Margin="10,1,0,0" GroupName="filters">Genre</RadioButton>
+                                    <RadioButton Click="FilterRadioClicked" Name="mRatingRadio" Margin="10,1,0,0" GroupName="filters">Rating</RadioButton>
+                                    <RadioButton Click="FilterRadioClicked" Name="mYearRadio" Margin="10,1,0,0" GroupName="filters">Year</RadioButton>
+                                    <CheckBox Click="mShowWatched_Click" Name="mShowWatched" Margin="10,1,10,0">Hide Already Watched</CheckBox>
+                                </StackPanel>
+                            </Border>
+                            <Separator Margin="3"/>
+                        </ToolBar>
+                    </ToolBarTray>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </DockPanel>
+</Page>

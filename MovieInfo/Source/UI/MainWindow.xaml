@@ -1,0 +1,13 @@
+﻿<Window x:Class="MovieInfo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        Name="mMainWindow"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:MovieInfo"
+        Title="Movie Information v3.2.0"
+        Width="480" Height="313"
+        MinWidth="480" MinHeight="313"
+        Closing="Window_Closing">
+    <Grid>
+        <Frame LoadCompleted="mFrame_LoadCompleted" x:Name="mFrame" Source="/Source/UI/MainPage.xaml" NavigationUIVisibility="Hidden"/>
+    </Grid>
+</Window>
